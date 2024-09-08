@@ -70,4 +70,27 @@ class Database
         }
         return $result;
     }
+
+    public function update(string $table, array $data, array $conditions)
+    {
+        $result = false;
+        if ($this->connected()) {
+            $setInstructions = array();
+            foreach (array_keys($data) as $key) {
+                array_push($setInstructions, "$key = :$key");
+            }
+            $strSet = implode(", ", $setInstructions);
+            $query = "UPDATE $table SET $strSet";
+            if (!empty($conditions)) {
+                $strConditions = implode(" AND ", $conditions);
+                $query .= " WHERE $strConditions";
+            }
+            $stmt = $this->conn->prepare($query);
+            foreach (array_keys($data) as $key) {
+                $stmt->bindValue(":$key", $data[$key]);
+            }
+            $result = $stmt->execute();
+        }
+        return $result;
+    }
 }
