@@ -38,16 +38,38 @@ class Database
         return isset($conn);
     }
 
+    private function bindValues(PDOStatement $stmt, array $data)
+    {
+        foreach (array_keys($data) as $key) {
+            $stmt->bindValue(":$key", $data[$key]);
+        }
+    }
+
+    private function addConditionsToQuery(string $query, array $conditions)
+    {
+        if (!empty($conditions)) {
+            $strConditions = implode(" AND ", $conditions);
+            $query .= " WHERE $strConditions";
+        }
+        return $query;
+    }
+
+    private function generateSetString(array $data)
+    {
+        $setInstructions = array();
+        foreach (array_keys($data) as $key) {
+            array_push($setInstructions, "$key = :$key");
+        }
+        return implode(", ", $setInstructions);
+    }
+
     public function select(string $table, array $columns = ["*"], array $conditions = [])
     {
         $result = null;
         if ($this->connected()) {
             $strColumns = implode(", ", $columns);
             $query = "SELECT $strColumns FROM $table";
-            if (!empty($conditions)) {
-                $strConditions = implode(" AND ", $conditions);
-                $query .= " WHERE $strConditions";
-            }
+            $query = $this->addConditionsToQuery($query, $conditions);
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -63,9 +85,7 @@ class Database
             $strPlaceholders = ":" . implode(", :", array_keys($data));
             $query = "INSERT INTO $table ($strColumns) VALUES ($strPlaceholders)";
             $stmt = $this->conn->prepare($query);
-            foreach (array_keys($data) as $key) {
-                $stmt->bindValue(":$key", $data[$key]);
-            }
+            $this->bindValues($stmt, $data);
             $result = $stmt->execute();
         }
         return $result;
@@ -75,20 +95,11 @@ class Database
     {
         $result = false;
         if ($this->connected()) {
-            $setInstructions = array();
-            foreach (array_keys($data) as $key) {
-                array_push($setInstructions, "$key = :$key");
-            }
-            $strSet = implode(", ", $setInstructions);
+            $strSet = $this->generateSetString($data);
             $query = "UPDATE $table SET $strSet";
-            if (!empty($conditions)) {
-                $strConditions = implode(" AND ", $conditions);
-                $query .= " WHERE $strConditions";
-            }
+            $query = $this->addConditionsToQuery($query, $conditions);
             $stmt = $this->conn->prepare($query);
-            foreach (array_keys($data) as $key) {
-                $stmt->bindValue(":$key", $data[$key]);
-            }
+            $this->bindValues($stmt, $data);
             $result = $stmt->execute();
         }
         return $result;
