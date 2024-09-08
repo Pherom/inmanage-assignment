@@ -65,7 +65,7 @@ class Database
             foreach (array_keys($data) as $key) {
                 $stmt->bindValue(":$key", $data[$key]);
             }
-            $stmt->execute();
+            return $stmt->execute();
         } else {
             echo "Please connect to database first.";
         }
