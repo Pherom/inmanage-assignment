@@ -40,6 +40,7 @@ class Database
 
     public function select(string $table, array $columns = ["*"], array $conditions = [])
     {
+        $result = null;
         if ($this->connected()) {
             $strColumns = implode(", ", $columns);
             $query = "SELECT $strColumns FROM $table";
@@ -49,14 +50,14 @@ class Database
             }
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } else {
-            echo "Please connect to database first.";
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+        return $result;
     }
 
     public function insert(string $table, array $data)
     {
+        $result = false;
         if ($this->connected()) {
             $strColumns = implode(", ", array_keys($data));
             $strPlaceholders = ":" . implode(", :", array_keys($data));
@@ -65,9 +66,8 @@ class Database
             foreach (array_keys($data) as $key) {
                 $stmt->bindValue(":$key", $data[$key]);
             }
-            return $stmt->execute();
-        } else {
-            echo "Please connect to database first.";
+            $result = $stmt->execute();
         }
+        return $result;
     }
 }
