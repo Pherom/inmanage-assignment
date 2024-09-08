@@ -104,4 +104,16 @@ class Database
         }
         return $result;
     }
+
+    public function delete(string $table, array $conditions)
+    {
+        $result = false;
+        if ($this->connected()) {
+            $query = "DELETE FROM $table";
+            $query = $this->addConditionsToQuery($query, $conditions);
+            $stmt = $this->conn->prepare($query);
+            $result = $stmt->execute();
+        }
+        return $result;
+    }
 }
