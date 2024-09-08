@@ -33,18 +33,39 @@ class Database
         }
     }
 
+    public function connected()
+    {
+        return isset($conn);
+    }
+
     public function select(string $table, array $columns = ["*"], array $conditions = [])
     {
-        if (isset($conn)) {
+        if ($this->connected()) {
             $strColumns = implode(", ", $columns);
             $query = "SELECT $strColumns FROM $table";
             if (!empty($conditions)) {
                 $strConditions = implode(" AND ", $conditions);
                 $query .= " WHERE $strConditions";
             }
-            $stmt = $conn->prepare($query);
+            $stmt = $this->conn->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            echo "Please connect to database first.";
+        }
+    }
+
+    public function insert(string $table, array $data)
+    {
+        if ($this->connected()) {
+            $strColumns = implode(", ", array_keys($data));
+            $strPlaceholders = ":" . implode(", :", array_keys($data));
+            $query = "INSERT INTO $table ($strColumns) VALUES ($strPlaceholders)";
+            $stmt = $this->conn->prepare($query);
+            foreach (array_keys($data) as $key) {
+                $stmt->bindValue(":$key", $data[$key]);
+            }
+            $stmt->execute();
         } else {
             echo "Please connect to database first.";
         }
