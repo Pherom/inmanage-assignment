@@ -7,7 +7,7 @@ class Database
     private $username = DB_USER;
     private $password = DB_PASS;
     private $database = DB_NAME;
-    private $conn;
+    private $conn = null;
 
     private static $instance = null;
 
@@ -24,12 +24,12 @@ class Database
     public function connect()
     {
         try {
-            $conn = new PDO(
+            $this->conn = new PDO(
                 "mysql:host={$this->host};dbname={$this->database}",
                 $this->username,
                 $this->password
             );
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             echo "Failed to connect to database: " . $e->getMessage();
         }
@@ -37,7 +37,7 @@ class Database
 
     public function connected()
     {
-        return isset($conn);
+        return isset($this->conn);
     }
 
     private function bindValues(PDOStatement $stmt, array $data)
@@ -69,11 +69,15 @@ class Database
     {
         $strSchema = "";
         foreach ($columns as $column) {
-            $columnName = $column['name'];
-            $columnDef = $column['definition'];
+            $columnName = $column["name"];
+            $columnDef = $column["definition"];
             $strSchema .= "$columnName $columnDef, ";
         }
-        $strSchema .= implode($constraints);
+        if (!empty($constraints)) {
+            $strSchema .= implode($constraints);
+        } else {
+            $strSchema = rtrim($strSchema, ", ");
+        }
         return $strSchema;
     }
 

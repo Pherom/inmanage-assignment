@@ -1,6 +1,5 @@
 <?php
 include("Database.php");
-include("config.php");
 
 class DatabaseInitializer
 {
@@ -13,8 +12,9 @@ class DatabaseInitializer
         curl_setopt($ch, CURLOPT_URL, API_URL . "/$resourceName");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        $api_response = json_decode(curl_exec($ch));
+        $api_response = json_decode(curl_exec($ch), true);
 
+        curl_close($ch);
         foreach ($api_response as $entity) {
             $data = array();
             foreach ($init_table["columns"] as $column) {
@@ -25,8 +25,6 @@ class DatabaseInitializer
             }
             Database::getInstance()->insert($init_table["name"], $data);
         }
-
-        curl_close($ch);
     }
 
     public function initialize()
@@ -35,7 +33,7 @@ class DatabaseInitializer
             Database::getInstance()->connect();
         }
         foreach (INIT_TABLES as $init_table) {
-            Database::getInstance()->createTable($init_table["name"], $init_table["columnDefinitions"], $init_table["constraints"]);
+            Database::getInstance()->createTable($init_table["name"], $init_table["columns"], $init_table["constraints"]);
             $this->populateTable($init_table);
         }
     }

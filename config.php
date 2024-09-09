@@ -35,36 +35,37 @@ define("INIT_TABLES", [
     ],
     [
         "name" => "posts",
-        "columns" =>
-        [
-            "name" => "post_id",
-            "definition" => "INT PRIMARY KEY AUTO_INCREMENT NOT NULL",
-            "apiName" => "id"
-        ],
-        [
-            "name" => "user_id",
-            "definition" => "INT NOT NULL",
-            "apiName" => "userId"
-        ],
-        [
-            "name" => "title",
-            "definition" => "VARCHAR(50) NOT NULL",
-            "apiName" => "title"
-        ],
-        [
-            "name" => "body",
-            "definition" => "VARCHAR(500) NOT NULL",
-            "apiName" => null
-        ],
-        [
-            "name" => "date_created",
-            "definition" => "DATETIME NOT NULL DEFAULT NOW()",
-            "apiName" => null
-        ],
-        [
-            "name" => "active",
-            "definition" => "BOOLEAN NOT NULL DEFAULT 1",
-            "apiName" => null
+        "columns" => [
+            [
+                "name" => "post_id",
+                "definition" => "INT PRIMARY KEY AUTO_INCREMENT NOT NULL",
+                "apiName" => "id"
+            ],
+            [
+                "name" => "user_id",
+                "definition" => "INT NOT NULL",
+                "apiName" => "userId"
+            ],
+            [
+                "name" => "title",
+                "definition" => "VARCHAR(50) NOT NULL",
+                "apiName" => "title"
+            ],
+            [
+                "name" => "body",
+                "definition" => "VARCHAR(500) NOT NULL",
+                "apiName" => null
+            ],
+            [
+                "name" => "date_created",
+                "definition" => "DATETIME NOT NULL DEFAULT NOW()",
+                "apiName" => null
+            ],
+            [
+                "name" => "active",
+                "definition" => "BOOLEAN NOT NULL DEFAULT 1",
+                "apiName" => null
+            ]
         ],
         "constraints" =>
         [
