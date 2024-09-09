@@ -116,4 +116,16 @@ class Database
         }
         return $result;
     }
+
+    public function createTable(string $table, array $columnsWithTypes)
+    {
+        $result = false;
+        if ($this->connected()) {
+            $strColumnsWithTypes = implode(", ", $columnsWithTypes);
+            $query = "CREATE TABLE $table ($strColumnsWithTypes)";
+            $stmt = $this->conn->prepare($query);
+            $result = $stmt->execute();
+        }
+        return $result;
+    }
 }
