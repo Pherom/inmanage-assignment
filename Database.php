@@ -1,10 +1,12 @@
 <?php
+include("config.php");
+
 class Database
 {
-    private $host = "localhost";
-    private $username = "root";
-    private $password = "";
-    private $database = "inmanage-assignment-db";
+    private $host = DB_HOST;
+    private $username = DB_USER;
+    private $password = DB_PASS;
+    private $database = DB_NAME;
     private $conn;
 
     private static $instance = null;
@@ -63,6 +65,18 @@ class Database
         return implode(", ", $setInstructions);
     }
 
+    private function generateSchemaString(array $columns, array $constraints)
+    {
+        $strSchema = "";
+        foreach ($columns as $column) {
+            $columnName = $column['name'];
+            $columnDef = $column['definition'];
+            $strSchema .= "$columnName $columnDef, ";
+        }
+        $strSchema .= implode($constraints);
+        return $strSchema;
+    }
+
     public function select(string $table, array $columns = ["*"], array $conditions = [])
     {
         $result = null;
@@ -117,12 +131,12 @@ class Database
         return $result;
     }
 
-    public function createTable(string $table, array $columnsWithTypes)
+    public function createTable(string $table, array $columns, array $constraints)
     {
         $result = false;
         if ($this->connected()) {
-            $strColumnsWithTypes = implode(", ", $columnsWithTypes);
-            $query = "CREATE TABLE $table ($strColumnsWithTypes)";
+            $strSchema = $this->generateSchemaString($columns, $constraints);
+            $query = "CREATE TABLE IF NOT EXISTS $table ($strSchema)";
             $stmt = $this->conn->prepare($query);
             $result = $stmt->execute();
         }
