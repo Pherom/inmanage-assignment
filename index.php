@@ -20,7 +20,7 @@ $imgDownloader->download(AVATAR_IMAGE_URL, AVATAR_FILE_NAME);
 </head>
 <body>
     <?php
-        $postsWithUserData = Database::getInstance()->select(POSTS_TABLE . " NATURAL JOIN " . USERS_TABLE);
+        $postsWithUserData = Database::getInstance()->select(POSTS_TABLE . " NATURAL JOIN " . USERS_TABLE . " ORDER BY " . POST_DATE_CREATED_COL . " DESC");
         foreach ($postsWithUserData as $post => $data) {
             $pv = new PostView($data[USER_NAME_COL], $data[USER_EMAIL_COL], $data[USER_ACTIVE_COL],
                                $data[POST_TITLE_COL], $data[POST_BODY_COL], $data[POST_DATE_CREATED_COL], $data[POST_ACTIVE_COL]);
