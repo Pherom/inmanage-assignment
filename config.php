@@ -68,7 +68,7 @@ if (!defined("INIT_TABLES")) define("INIT_TABLES",
             [
                 "name" => POST_BODY_COL,
                 "definition" => "VARCHAR(500) NOT NULL",
-                "apiName" => null
+                "apiName" => "body"
             ],
             [
                 "name" => POST_DATE_CREATED_COL,

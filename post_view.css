@@ -160,11 +160,13 @@ p {
     font-weight: 500;
 }
 
-.user-email {
+.user-email,
+.post-date-created {
     font-size: 0.75em;
 }
 
-.is-user-active {
+.is-user-active,
+.is-post-active {
     font-size: 0.6em;
 }
 
