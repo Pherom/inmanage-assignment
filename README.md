@@ -59,5 +59,5 @@ Run the Apache server on your local machine and go to "localhost/\[path to birth
 
 ## License
 
-[MIT](https://github.com/Pherom/inmanage-assignment/blob/main/LICENSE)
+[MIT](./LICENSE)
 
