@@ -23,7 +23,7 @@ class DatabaseInitializer
                     $data[$column["name"]] = $value;
                 }
             }
-            Database::getInstance()->insert($init_table["name"], $data);
+            Database::getInstance()->insert($init_table["name"], $data, []);
         }
     }
 

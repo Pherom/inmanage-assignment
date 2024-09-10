@@ -81,6 +81,18 @@ class Database
         return $strSchema;
     }
 
+    private function generateOnDuplicateKeyUpdate(array $columnsToUpdateOnDupKey) {
+        $result = "";
+        if (!empty($columnsToUpdateOnDupKey)) {
+            $result .= " ON DUPLICATE KEY UPDATE ";
+            foreach ($columnsToUpdateOnDupKey as $column) {
+                $result .= $column . " = VALUES(" . $column ."), ";
+            }
+            $result = rtrim($result, ", ");
+        }
+        return $result;
+    }
+
     public function select(string $table, array $columns = ["*"], array $conditions = [])
     {
         $result = null;
@@ -95,13 +107,14 @@ class Database
         return $result;
     }
 
-    public function insert(string $table, array $data)
+    public function insert(string $table, array $data, array $columnsToUpdateOnDupKey)
     {
         $result = false;
         if ($this->connected()) {
             $strColumns = implode(", ", array_keys($data));
             $strPlaceholders = ":" . implode(", :", array_keys($data));
             $query = "INSERT INTO $table ($strColumns) VALUES ($strPlaceholders)";
+            $query .= $this->generateOnDuplicateKeyUpdate($columnsToUpdateOnDupKey);
             $stmt = $this->conn->prepare($query);
             $this->bindValues($stmt, $data);
             $result = $stmt->execute();
