@@ -3,28 +3,41 @@ if (!defined("DB_HOST")) define("DB_HOST", "localhost");
 if (!defined("DB_USER")) define("DB_USER", "root");
 if (!defined("DB_PASS")) define("DB_PASS", "");
 if (!defined("DB_NAME")) define("DB_NAME", "inmanage-assignment-db");
-if (!defined("INIT_TABLES")) define("INIT_TABLES", [
+if (!defined("USER_ID_COL")) define("USER_ID_COL", "user_id");
+if (!defined("USER_NAME_COL")) define("USER_NAME_COL", "name");
+if (!defined("USER_EMAIL_COL")) define("USER_EMAIL_COL", "email");
+if (!defined("USER_ACTIVE_COL")) define("USER_ACTIVE_COL", "active");
+if (!defined("POST_ID_COL")) define("POST_ID_COL", "post_id");
+if (!defined("POST_USER_ID_COL")) define("POST_USER_ID_COL", "user_id");
+if (!defined("POST_TITLE_COL")) define("POST_TITLE_COL", "title");
+if (!defined("POST_BODY_COL")) define("POST_BODY_COL", "body");
+if (!defined("POST_DATE_CREATED_COL")) define("POST_DATE_CREATED_COL", "date_created");
+if (!defined("POST_ACTIVE_COL")) define("POST_ACTIVE_COL", "active");
+if (!defined("POSTS_TABLE")) define("POSTS_TABLE", "posts");
+if (!defined("USERS_TABLE")) define("USERS_TABLE", "users");
+if (!defined("INIT_TABLES")) define("INIT_TABLES",
+[
     [
-        "name" => "users",
+        "name" => USERS_TABLE,
         "columns" =>
         [
             [
-                "name" => "user_id",
+                "name" => USER_ID_COL,
                 "definition" => "INT PRIMARY KEY AUTO_INCREMENT NOT NULL",
                 "apiName" => "id"
             ],
             [
-                "name" => "name",
+                "name" => USER_NAME_COL,
                 "definition" => "VARCHAR(50) NOT NULL",
                 "apiName" => "name"
             ],
             [
-                "name" => "email",
+                "name" => USER_EMAIL_COL,
                 "definition" => "VARCHAR(50) UNIQUE NOT NULL",
                 "apiName" => "email"
             ],
             [
-                "name" => "active",
+                "name" => USER_ACTIVE_COL,
                 "definition" => "BOOLEAN NOT NULL DEFAULT 1",
                 "apiName" => null
             ]
@@ -34,42 +47,43 @@ if (!defined("INIT_TABLES")) define("INIT_TABLES", [
         "apiName" => "users"
     ],
     [
-        "name" => "posts",
-        "columns" => [
+        "name" => POSTS_TABLE,
+        "columns" =>
+        [
             [
-                "name" => "post_id",
+                "name" => POST_ID_COL,
                 "definition" => "INT PRIMARY KEY AUTO_INCREMENT NOT NULL",
                 "apiName" => "id"
             ],
             [
-                "name" => "user_id",
+                "name" => POST_USER_ID_COL,
                 "definition" => "INT NOT NULL",
                 "apiName" => "userId"
             ],
             [
-                "name" => "title",
+                "name" => POST_TITLE_COL,
                 "definition" => "VARCHAR(50) NOT NULL",
                 "apiName" => "title"
             ],
             [
-                "name" => "body",
+                "name" => POST_BODY_COL,
                 "definition" => "VARCHAR(500) NOT NULL",
                 "apiName" => null
             ],
             [
-                "name" => "date_created",
+                "name" => POST_DATE_CREATED_COL,
                 "definition" => "DATETIME NOT NULL DEFAULT NOW()",
                 "apiName" => null
             ],
             [
-                "name" => "active",
+                "name" => POST_ACTIVE_COL,
                 "definition" => "BOOLEAN NOT NULL DEFAULT 1",
                 "apiName" => null
             ]
         ],
         "constraints" =>
         [
-            "FOREIGN KEY (user_id) REFERENCES users(user_id)"
+            "FOREIGN KEY (". POST_USER_ID_COL .") REFERENCES users(". USER_ID_COL .")"
         ],
         "apiName" => "posts"
     ]
