@@ -146,4 +146,19 @@ class Database
         }
         return $result;
     }
+
+    public function tableExists(string $table)
+    {
+        $result = false;
+        if ($this->connected()) {
+            $query = "SELECT COUNT(*)
+                      FROM information_schema.TABLES
+                      WHERE TABLE_SCHEMA = '". DB_NAME ."'
+                      AND TABLE_NAME = '$table'";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetchColumn() > 0;
+        }
+        return $result;
+    }
 }
