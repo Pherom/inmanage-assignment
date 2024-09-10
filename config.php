@@ -2,7 +2,7 @@
 if (!defined("DB_HOST")) define("DB_HOST", "localhost");
 if (!defined("DB_USER")) define("DB_USER", "root");
 if (!defined("DB_PASS")) define("DB_PASS", "");
-if (!defined("DB_NAME")) define("DB_NAME", "inmanage-assignment-db");
+if (!defined("DB_NAME")) define("DB_NAME", "inmanage_assignment_db");
 if (!defined("USER_ID_COL")) define("USER_ID_COL", "user_id");
 if (!defined("USER_NAME_COL")) define("USER_NAME_COL", "name");
 if (!defined("USER_EMAIL_COL")) define("USER_EMAIL_COL", "email");
@@ -14,8 +14,12 @@ if (!defined("POST_TITLE_COL")) define("POST_TITLE_COL", "title");
 if (!defined("POST_BODY_COL")) define("POST_BODY_COL", "body");
 if (!defined("POST_DATE_CREATED_COL")) define("POST_DATE_CREATED_COL", "date_created");
 if (!defined("POST_ACTIVE_COL")) define("POST_ACTIVE_COL", "active");
+if (!defined("POST_STATS_DATE_COL")) define("POST_STATS_DATE_COL", "date");
+if (!defined("POST_STATS_TIME_COL")) define("POST_STATS_TIME_COL", "time");
+if (!defined("POST_STATS_COUNT_COL")) define("POST_STATS_COUNT_COL", "post_count");
 if (!defined("POSTS_TABLE")) define("POSTS_TABLE", "posts");
 if (!defined("USERS_TABLE")) define("USERS_TABLE", "users");
+if (!defined("POST_STATS_TABLE")) define("POST_STATS_TABLE", "post_stats");
 if (!defined("INIT_TABLES")) define("INIT_TABLES",
 [
     [
@@ -92,6 +96,32 @@ if (!defined("INIT_TABLES")) define("INIT_TABLES",
             "FOREIGN KEY (". POST_USER_ID_COL .") REFERENCES users(". USER_ID_COL .")"
         ],
         "apiName" => "posts"
+    ],
+    [
+        "name" => POST_STATS_TABLE,
+        "columns" =>
+        [
+            [
+                "name" => POST_STATS_DATE_COL,
+                "definition" => "DATE NOT NULL",
+                "apiName" => null
+            ],
+            [
+                "name" => POST_STATS_TIME_COL,
+                "definition" => "TIME NOT NULL",
+                "apiName" => null
+            ],
+            [
+                "name" => POST_STATS_COUNT_COL,
+                "definition" => "INT NOT NULL",
+                "apiName" => null
+            ]
+        ],
+        "constraints" =>
+        [
+            "PRIMARY KEY (" . POST_STATS_DATE_COL . ", " . POST_STATS_TIME_COL . ")"
+        ],
+        "apiName" => null
     ]
 ]);
 if (!defined("API_URL")) define("API_URL", "https://jsonplaceholder.typicode.com");

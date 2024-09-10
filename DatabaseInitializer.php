@@ -35,7 +35,9 @@ class DatabaseInitializer
         foreach (INIT_TABLES as $init_table) {
             if (!Database::getInstance()->tableExists($init_table["name"])) {
             Database::getInstance()->createTable($init_table["name"], $init_table["columns"], $init_table["constraints"]);
-            $this->populateTable($init_table);
+                if (isset($init_table["apiName"])) {
+                    $this->populateTable($init_table);
+                }
             }
         }
     }
