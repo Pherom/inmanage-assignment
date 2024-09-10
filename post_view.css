@@ -145,6 +145,11 @@ p {
     padding: 5px;
 }
 
+.post-content h1,
+p {
+    padding: 10px;
+}
+
 .user-avatar-container {
     overflow: hidden;
 }
@@ -190,6 +195,11 @@ p {
     align-self: flex-end;
 }
 
+.post-metadata p {
+    padding: 5px;
+}
+
 .post-title {
+    font-size: 1.5em;
     font-weight: 600;
 }
