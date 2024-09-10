@@ -7,6 +7,7 @@ if (!defined("USER_ID_COL")) define("USER_ID_COL", "user_id");
 if (!defined("USER_NAME_COL")) define("USER_NAME_COL", "name");
 if (!defined("USER_EMAIL_COL")) define("USER_EMAIL_COL", "email");
 if (!defined("USER_ACTIVE_COL")) define("USER_ACTIVE_COL", "active");
+if (!defined("USER_BIRTH_DATE_COL")) define("USER_BIRTH_DATE_COL", "birth_date");
 if (!defined("POST_ID_COL")) define("POST_ID_COL", "post_id");
 if (!defined("POST_USER_ID_COL")) define("POST_USER_ID_COL", "user_id");
 if (!defined("POST_TITLE_COL")) define("POST_TITLE_COL", "title");
@@ -35,6 +36,11 @@ if (!defined("INIT_TABLES")) define("INIT_TABLES",
                 "name" => USER_EMAIL_COL,
                 "definition" => "VARCHAR(50) UNIQUE NOT NULL",
                 "apiName" => "email"
+            ],
+            [
+                "name" => USER_BIRTH_DATE_COL,
+                "definition" => "DATE",
+                "apiName" => null
             ],
             [
                 "name" => USER_ACTIVE_COL,
