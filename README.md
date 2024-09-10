@@ -52,7 +52,7 @@ Run the Apache server on your local machine and go to "localhost/\[path to birth
 - Viewing posts in a social media style
 
 
-## Screenshots
+## Database Design
 
 ![Database Design](./database_design.png)
 
